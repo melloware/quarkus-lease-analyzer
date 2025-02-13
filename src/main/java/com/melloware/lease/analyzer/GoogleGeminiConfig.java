@@ -1,4 +1,4 @@
-package io.quarkiverse.langchain4j.sample;
+package com.melloware.lease.analyzer;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;

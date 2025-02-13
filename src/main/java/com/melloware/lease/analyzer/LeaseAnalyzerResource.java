@@ -1,4 +1,4 @@
-package io.quarkiverse.langchain4j.sample;
+package com.melloware.lease.analyzer;
 
 import static dev.langchain4j.model.chat.request.ResponseFormatType.JSON;
 

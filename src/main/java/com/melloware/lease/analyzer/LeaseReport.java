@@ -1,4 +1,4 @@
-package io.quarkiverse.langchain4j.sample;
+package com.melloware.lease.analyzer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
