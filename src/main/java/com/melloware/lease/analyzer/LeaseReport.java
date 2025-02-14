@@ -11,7 +11,9 @@ import java.time.LocalDate;
  * @param developmentTermEndDate The end date of any development/construction period
  * @param landlordName The name of the landlord/property owner
  * @param tenantName The name of the tenant/lessee
+ * @param taxParcelId The tax parcel identification number of the leased property
  * @param acres The size of the leased property in acres
+ * @param exclusiveRights Whether the tenant has exclusive rights to the property
  */
 public record LeaseReport(
         LocalDate agreementDate,
@@ -20,5 +22,7 @@ public record LeaseReport(
         LocalDate developmentTermEndDate,
         String landlordName,
         String tenantName,
-        BigDecimal acres) {
+        String taxParcelId,
+        BigDecimal acres,
+        Boolean exclusiveRights) {
 }

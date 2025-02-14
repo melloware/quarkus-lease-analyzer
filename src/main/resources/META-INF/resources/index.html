@@ -18,11 +18,31 @@
         th {
             background-color: #f2f2f2;
         }
+        .analyzing {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2em;
+            color: #1a73e8;
+            margin: 20px 0;
+        }
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #1a73e8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-<h3>Analyze Lease Agreement</h3>
-<p>Select a PDF document to analyze:</p>
+<h3>Google Gemini Lease Analyzer</h3>
+<p>Select a PDF lease document to analyze:</p>
 
 <input type="file" id="fileInput" accept=".pdf">
 <button id="analyze">Analyze</button>
@@ -33,9 +53,11 @@
 <table id="resultsTable">
     <thead>
         <tr>
-            <th>Landlord</th>
+            <th style="width: 300px;">Landlord</th>
             <th>Tenant</th>
             <th>Acres</th>
+            <th>Tax Parcel ID</th>
+            <th>Exclusive Rights</th>
             <th>Agreement Date</th>
             <th>Development Term End</th>
             <th>Term Start</th>
@@ -62,7 +84,13 @@
         formData.append('file', fileInput.files[0]);
         formData.append('fileName', fileInput.files[0].name);
 
-        document.getElementById('status').textContent = 'Analyzing...';
+        const statusDiv = document.getElementById('status');
+        statusDiv.innerHTML = `
+            <div class="analyzing">
+                <div class="spinner"></div>
+                <span>Analyzing with Google Gemini...</span>
+            </div>
+        `;
 
         fetch('/analyze-lease/upload', {
             method: 'PUT',
@@ -73,14 +101,16 @@
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('status').textContent = '';
+            statusDiv.innerHTML = '';
             
             const tbody = document.querySelector('#resultsTable tbody');
             const row = tbody.insertRow();
             
             row.insertCell().textContent = data.landlordName || '';
             row.insertCell().textContent = data.tenantName || '';
-            row.insertCell().textContent = data.acres || '';
+            row.insertCell().textContent = data.acres || '0';
+            row.insertCell().textContent = data.taxParcelId || '';
+            row.insertCell().textContent = data.exclusiveRights ? 'Yes' : 'No';
             row.insertCell().textContent = data.agreementDate ? `${data.agreementDate.month}/${data.agreementDate.day}/${data.agreementDate.year}` : '';
             row.insertCell().textContent = data.developmentTermEndDate ? `${data.developmentTermEndDate.month}/${data.developmentTermEndDate.day}/${data.developmentTermEndDate.year}` : '';
             row.insertCell().textContent = data.termStartDate ? `${data.termStartDate.month}/${data.termStartDate.day}/${data.termStartDate.year}` : '';
@@ -91,7 +121,7 @@
         })
         .catch(error => {
             console.error(error);
-            document.getElementById('status').textContent = 'Failed to analyze document!';
+            statusDiv.innerHTML = '<div class="analyzing" style="color: #dc3545;">Failed to analyze document!</div>';
         });
     });
 

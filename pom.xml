@@ -5,30 +5,28 @@
 
     <groupId>com.melloware</groupId>
     <artifactId>quarkus-lease-analyzer</artifactId>
-    <name>Quarkus Lease Analyzer - Extract Lease Information from PDF documents</name>
     <version>1.0-SNAPSHOT</version>
+    <name>Quarkus Lease Analyzer - Extract Lease Information from PDF documents</name>
 
     <properties>
+        <!-- libraries -->
         <langchain4j.version>1.0.0-beta1</langchain4j.version>
         <quarkus-langchain4j.version>0.24.0</quarkus-langchain4j.version>
-        <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-        <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-        <quarkus.platform.version>3.15.3</quarkus.platform.version>
+        <quarkus.platform.version>3.18.3</quarkus.platform.version>
+        <lombok.version>1.18.36</lombok.version>
         <!-- plugins -->
-        <compiler-plugin.version>3.13.0</compiler-plugin.version>
         <maven.compiler.parameters>true</maven.compiler.parameters>
-        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skipITs>true</skipITs>
-        <surefire-plugin.version>3.2.5</surefire-plugin.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>${quarkus.platform.group-id}</groupId>
-                <artifactId>${quarkus.platform.artifact-id}</artifactId>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-bom</artifactId>
                 <version>${quarkus.platform.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -55,11 +53,10 @@
             <artifactId>langchain4j-google-ai-gemini</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -78,12 +75,14 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${compiler-plugin.version}</version>
+                <version>3.13.0</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.5.2</version>
                 <configuration>
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
@@ -128,8 +127,9 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>3.5.1</version>
+                        <version>3.5.2</version>
                         <executions>
                             <execution>
                                 <goals>
