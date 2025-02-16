@@ -80,11 +80,11 @@ public class LeaseAnalyzerResource {
                     .build();
 
             log.info("Google Gemini analyzing....");
-            long startTime = System.currentTimeMillis();
+            long startTime = System.nanoTime();
             ChatResponse chatResponse = model.chat(chatRequest);
-            long endTime = System.currentTimeMillis();
+            long endTime = System.nanoTime();
             String response = chatResponse.aiMessage().text();
-            log.infof("Google Gemini analyzed in %d ms: %s", (endTime - startTime), response);
+            log.infof("Google Gemini analyzed in %.2f seconds: %s", (endTime - startTime) / 1_000_000_000.0, response);
 
             return response;
         } catch (IOException e) {
