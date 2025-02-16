@@ -37,7 +37,6 @@ The backend processes the PDF through these steps:
 The main components are:
 - `LeaseAnalyzerResource` - REST endpoint for PDF analysis
 - `LeaseReport` - Data structure for lease information
-- `LeaseUploadRequest` - Multipart form handling
 - Web interface for file upload and results display
 
 
