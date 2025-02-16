@@ -58,3 +58,8 @@ mvn quarkus:dev
 ## Using the example
 
 Open the application at http://localhost:8080 and click `Upload` then `Analyze`.
+
+
+![Lease Analyzer Screenshot](lease-analyzer.png)
+
+
