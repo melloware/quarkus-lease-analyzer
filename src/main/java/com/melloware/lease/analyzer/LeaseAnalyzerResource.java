@@ -53,7 +53,7 @@ public class LeaseAnalyzerResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/upload")
     @Operation(summary = "Upload and analyze a lease document", description = "Uploads a PDF lease document and analyzes it using Google Gemini AI to extract key information")
-    @RequestBody(required = true, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA, schema = @Schema(implementation = FileUpload.class)))
+    @RequestBody(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA, schema = @Schema(implementation = FileUpload.class)))
     @APIResponse(responseCode = "200", description = "Successfully analyzed lease document", content = @Content(mediaType = MediaType.TEXT_PLAIN, schema = @Schema(implementation = LeaseReport.class)))
     public String upload(@RestForm("file") FileUpload fileUploadRequest) {
         final String fileName = fileUploadRequest.fileName();
