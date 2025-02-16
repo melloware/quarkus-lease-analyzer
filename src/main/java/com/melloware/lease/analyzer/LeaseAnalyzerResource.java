@@ -101,7 +101,7 @@ public class LeaseAnalyzerResource {
     private static ResponseFormat responseFormatFrom(Class<?> clazz) {
         return ResponseFormat.builder()
                 .type(ResponseFormatType.JSON)
-                .jsonSchema(JsonSchemas.jsonSchemaFrom(clazz).get())
+                .jsonSchema(JsonSchemas.jsonSchemaFrom(clazz).orElseThrow())
                 .build();
     }
 }
