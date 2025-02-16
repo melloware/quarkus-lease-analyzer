@@ -1,7 +1,13 @@
-# Quarkus Lease Analyzer
 
-This example demonstrates how to analyze a lease PDF document using Google AI Gemini
-and get a structured output metadata about the lease.
+<div align="center">
+<img src="https://github.com/quarkiverse/.github/blob/main/assets/images/quarkus.svg" width="67" height="70" ><img src="https://github.com/quarkiverse/.github/blob/main/assets/images/plus-sign.svg" height="70" ><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/195px-PDF_file_icon.svg.png" width="67" height="70" ><img src="https://github.com/quarkiverse/.github/blob/main/assets/images/plus-sign.svg" height="70" ><img src="https://github.com/melloware/quarkus-lease-analyzer/blob/main/gemini.svg" height="70" >
+
+# Quarkus Lease Analyzer
+</div>
+<br>
+
+This project showcases the analysis of lease PDF documents through a Quarkus microservice integrated with Google AI Gemini,
+extracting structured metadata information from lease agreements.
 
 ## Project Overview
 
