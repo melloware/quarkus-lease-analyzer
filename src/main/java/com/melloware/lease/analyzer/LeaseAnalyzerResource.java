@@ -1,9 +1,17 @@
 package com.melloware.lease.analyzer;
 
+import dev.langchain4j.data.pdf.PdfFile;
+import dev.langchain4j.model.chat.ChatLanguageModel;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Base64;
-
+import lombok.extern.jbosslog.JBossLog;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -11,24 +19,6 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
-
-import dev.langchain4j.data.message.PdfFileContent;
-import dev.langchain4j.data.message.TextContent;
-import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.chat.request.ChatRequest;
-import dev.langchain4j.model.chat.request.ChatRequestParameters;
-import dev.langchain4j.model.chat.request.ResponseFormat;
-import dev.langchain4j.model.chat.request.ResponseFormatType;
-import dev.langchain4j.model.chat.response.ChatResponse;
-import dev.langchain4j.service.output.JsonSchemas;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-import lombok.extern.jbosslog.JBossLog;
 
 /**
  * REST resource for analyzing lease documents using Google Gemini AI.
@@ -38,9 +28,8 @@ import lombok.extern.jbosslog.JBossLog;
 @JBossLog
 public class LeaseAnalyzerResource {
 
-    /** The chat language model used for document analysis */
     @Inject
-    ChatLanguageModel model;
+    LeaseAnalyzer analyzer;
 
     /**
      * Uploads and analyzes a PDF lease document.
@@ -50,12 +39,12 @@ public class LeaseAnalyzerResource {
      */
     @PUT
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces({MediaType.APPLICATION_JSON})
     @Path("/upload")
     @Operation(summary = "Upload and analyze a lease document", description = "Uploads a PDF lease document and analyzes it using Google Gemini AI to extract key information")
     @RequestBody(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA, schema = @Schema(implementation = FileUpload.class)))
-    @APIResponse(responseCode = "200", description = "Successfully analyzed lease document", content = @Content(mediaType = MediaType.TEXT_PLAIN, schema = @Schema(implementation = LeaseReport.class)))
-    public String upload(@RestForm("file") FileUpload fileUploadRequest) {
+    @APIResponse(responseCode = "200", description = "Successfully analyzed lease document", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LeaseReport.class)))
+    public LeaseReport upload(@RestForm("file") FileUpload fileUploadRequest) {
         final String fileName = fileUploadRequest.fileName();
         log.infof("Uploading file: %s", fileName);
 
@@ -66,42 +55,17 @@ public class LeaseAnalyzerResource {
             // Encode PDF content to base64 for transmission
             String documentEncoded = Base64.getEncoder().encodeToString(fileBytes);
 
-            // Create user message with PDF content for analysis
-            UserMessage userMessage = UserMessage.from(
-                    TextContent.from("Analyze the given document"),
-                    PdfFileContent.from(documentEncoded, "application/pdf"));
-
-            // Build chat request with JSON response format
-            ChatRequest chatRequest = ChatRequest.builder()
-                    .messages(userMessage)
-                    .parameters(ChatRequestParameters.builder()
-                            .responseFormat(responseFormatFrom(LeaseReport.class))
-                            .build())
-                    .build();
-
             log.info("Google Gemini analyzing....");
             long startTime = System.nanoTime();
-            ChatResponse chatResponse = model.chat(chatRequest);
-            long endTime = System.nanoTime();
-            String response = chatResponse.aiMessage().text();
-            log.infof("Google Gemini analyzed in %.2f seconds: %s", (endTime - startTime) / 1_000_000_000.0, response);
 
-            return response;
+            LeaseReport result = analyzer.analyze(PdfFile.builder().base64Data(documentEncoded).build());
+
+            long endTime = System.nanoTime();
+            log.infof("Google Gemini analyzed in %.2f seconds: %s", (endTime - startTime) / 1_000_000_000.0, result);
+
+            return result;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Creates a JSON response format for the specified class.
-     * 
-     * @param clazz The class to create JSON schema from
-     * @return ResponseFormat configured for JSON output
-     */
-    private static ResponseFormat responseFormatFrom(Class<?> clazz) {
-        return ResponseFormat.builder()
-                .type(ResponseFormatType.JSON)
-                .jsonSchema(JsonSchemas.jsonSchemaFrom(clazz).orElseThrow())
-                .build();
     }
 }
