@@ -105,6 +105,7 @@
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             statusDiv.innerHTML = '';
             
             const tbody = document.querySelector('#resultsTable tbody');
@@ -115,10 +116,10 @@
             row.insertCell().textContent = data.acres || '0';
             row.insertCell().textContent = data.taxParcelId || '';
             row.insertCell().textContent = data.exclusiveRights ? 'Yes' : 'No';
-            row.insertCell().textContent = data.agreementDate ? `${data.agreementDate.month}/${data.agreementDate.day}/${data.agreementDate.year}` : '';
-            row.insertCell().textContent = data.developmentTermEndDate ? `${data.developmentTermEndDate.month}/${data.developmentTermEndDate.day}/${data.developmentTermEndDate.year}` : '';
-            row.insertCell().textContent = data.termStartDate ? `${data.termStartDate.month}/${data.termStartDate.day}/${data.termStartDate.year}` : '';
-            row.insertCell().textContent = data.termEndDate ? `${data.termEndDate.month}/${data.termEndDate.day}/${data.termEndDate.year}` : '';
+            row.insertCell().textContent = data.agreementDate ? `${data.agreementDate}` : '';
+            row.insertCell().textContent = data.developmentTermEndDate ? `${data.developmentTermEndDate}` : '';
+            row.insertCell().textContent = data.termStartDate ? `${data.termStartDate}` : '';
+            row.insertCell().textContent = data.termEndDate ? `${data.termEndDate}` : '';
 
             document.getElementById('clear').disabled = false;
             fileInput.value = '';
