@@ -1,7 +1,7 @@
 package com.melloware.lease.analyzer;
 
 import dev.langchain4j.data.pdf.PdfFile;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.PUT;

@@ -12,7 +12,7 @@
         <!-- libraries -->
         <langchain4j.version>1.0.0-beta1</langchain4j.version>
         <quarkus-langchain4j.version>0.25.0.CR3</quarkus-langchain4j.version>
-        <quarkus.platform.version>3.18.3</quarkus.platform.version>
+        <quarkus.platform.version>3.19.0</quarkus.platform.version>
         <lombok.version>1.18.36</lombok.version>
         <!-- plugins -->
         <maven.compiler.parameters>true</maven.compiler.parameters>
@@ -83,7 +83,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
