@@ -11,7 +11,7 @@
     <properties>
         <!-- libraries -->
         <langchain4j.version>1.0.0-beta1</langchain4j.version>
-        <quarkus-langchain4j.version>0.24.0</quarkus-langchain4j.version>
+        <quarkus-langchain4j.version>0.25.0.CR3</quarkus-langchain4j.version>
         <quarkus.platform.version>3.18.3</quarkus.platform.version>
         <lombok.version>1.18.36</lombok.version>
         <!-- plugins -->
@@ -37,7 +37,7 @@
     <dependencies>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-rest</artifactId>
+            <artifactId>quarkus-rest-jackson</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -45,14 +45,20 @@
         </dependency>
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
-            <artifactId>quarkus-langchain4j-core</artifactId>
+            <artifactId>quarkus-langchain4j-ai-gemini</artifactId>
             <version>${quarkus-langchain4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-google-ai-gemini</artifactId>
-            <version>${langchain4j.version}</version>
+            <groupId>io.quarkiverse.langchain4j</groupId>
+            <artifactId>quarkus-langchain4j-core-deployment</artifactId>
+            <version>${quarkus-langchain4j.version}</version>
+            <scope>provided</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>dev.langchain4j</groupId>-->
+<!--            <artifactId>langchain4j-google-ai-gemini</artifactId>-->
+<!--            <version>${langchain4j.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
