@@ -11,7 +11,7 @@
     <properties>
         <!-- libraries -->
         <quarkus-langchain4j.version>1.0.2</quarkus-langchain4j.version>
-        <quarkus.platform.version>3.24.1</quarkus.platform.version>
+        <quarkus.platform.version>3.25.0</quarkus.platform.version>
         <lombok.version>1.18.38</lombok.version>
         <!-- plugins -->
         <maven.compiler.parameters>true</maven.compiler.parameters>
